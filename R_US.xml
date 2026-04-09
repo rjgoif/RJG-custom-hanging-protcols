@@ -1,0 +1,2910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HangingProtocol Name="R US"
+                 TranslateName="true"
+                 Version="4.0"
+                 ClientVersion="-"
+                 Priority="83"
+                 Active="true"
+                 ActiveTool="Standard.DefaultNavigation"
+                 Linking="false">
+    <ProtocolComment>
+R US - Custom Reece ultrasound hanging protocol.
+Based on Ultrasound (no auto play), all layouts identical except:
+
+Added Compare Statics/Clips (80% statics) layouts (LayoutIds 5201, 5210, 5212, 5213):
+  - Static image panels open at 80% zoom
+  - Clip panels remain at default 100% zoom
+  - Available for 1, 2, 3, and 4 monitor configurations
+  - Same conditions and priorities as the regular Compare Statics/Clips layouts
+</ProtocolComment>
+
+    <!--***************************************************************************************
+Change history (for customer/site-specific changes/modifications):
+Date/name/change message
+
+2017-02-01 TGschwind switch to auto-viewers where possible
+
+
+************************************************************************************** -->
+    <Environment>
+        <Screens Monitors="1 2 3 4"/>
+    </Environment>
+
+    <HangingProtocolDefinition>
+
+<!--
+    ******************************
+    Studies
+    ******************************
+-->
+
+        <!-- #1 ultrasound exam -->
+        <Study StudyId="0" Type="Current" Required="true">
+            <Series SeriesId="0">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- #1 ultrasound exam -->
+        <Study StudyId="1" Type="Current" CanBeSameAsStudy="0" Required="true">
+            <Series SeriesId="1">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- first include extra studies for NM-CT and PT-CT -->
+        <include href="_include_MultiModality.xml#ExtraStudies_Combined"/>
+        <!-- #2 ultrasound exam -->
+        <Study StudyId="101" Type="Any" Required="false">
+            <Series SeriesId="101">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- #3 ultrasound exam -->
+        <Study StudyId="201" Type="Any" Required="false">
+            <Series SeriesId="201">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- #4 ultrasound exam -->
+        <Study StudyId="301" Type="Any" Required="false">
+            <Series SeriesId="301">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- #5 ultrasound exam -->
+        <Study StudyId="401" Type="Any" Required="false">
+            <Series SeriesId="401">
+                <Tag Name="Dicom.Modality">US</Tag>
+            </Series>
+        </Study>
+
+        <!-- last include other extra studies -->
+        <include href="_include_MultiModality.xml#ExtraStudies_Other"/>
+    </HangingProtocolDefinition>
+
+
+
+<!--
+    ******************************
+    #Script
+    ******************************
+-->
+
+    <include href="_include_Scripts.xml#Scripts_US"/>
+
+    <!--
+    ******************************
+    ImageSets
+    ******************************
+-->
+    <include replace="22121918=1;%STUDYPREFIX%=Curr" href="_include_ImageSets.xml#ImageSets_US"/>
+    <include replace="22121918=101;%STUDYPREFIX%=P1" href="_include_ImageSets.xml#ImageSets_US"/>
+    <include replace="22121918=201;%STUDYPREFIX%=P2" href="_include_ImageSets.xml#ImageSets_US"/>
+    <include replace="22121918=301;%STUDYPREFIX%=P3" href="_include_ImageSets.xml#ImageSets_US"/>
+    <include replace="22121918=401;%STUDYPREFIX%=P4" href="_include_ImageSets.xml#ImageSets_US"/>
+    <include replace="22121918=1;%STUDYPREFIX%=Curr" href="_include_ImageSets_Partners.xml#ImageSets_US"/>
+    <include replace="22121918=101;%STUDYPREFIX%=P1" href="_include_ImageSets_Partners.xml#ImageSets_US"/>
+    <include replace="22121918=201;%STUDYPREFIX%=P2" href="_include_ImageSets_Partners.xml#ImageSets_US"/>
+    <include replace="22121918=301;%STUDYPREFIX%=P3" href="_include_ImageSets_Partners.xml#ImageSets_US"/>
+    <include replace="22121918=401;%STUDYPREFIX%=P4" href="_include_ImageSets_Partners.xml#ImageSets_US"/>
+
+    <include replace="22121918=10001;%STUDYPREFIX%=ExtraNM" href="_include_ImageSets.xml#ImageSets_NM"/>
+    <include replace="22121918=11001;%STUDYPREFIX%=ExtraPT" href="_include_ImageSets.xml#ImageSets_PT"/>
+    <include replace="22121918=12001;%STUDYPREFIX%=ExtraCT" href="_include_ImageSets.xml#ImageSets_CT"/>
+    <include replace="22121918=13001;%STUDYPREFIX%=ExtraMR" href="_include_ImageSets.xml#ImageSets_MR"/>
+    <include replace="22121918=14001;%STUDYPREFIX%=ExtraMG" href="_include_Mammo.xml#ImageSets_Mammo"/>
+    <include replace="22121918=15001;%STUDYPREFIX%=ExtraCR" href="_include_ImageSets.xml#ImageSets_PlainFilm"/>
+    <!--    <include replace="22121918=16001;%STUDYPREFIX%=ExtraUS" href="_include_ImageSets.xml#ImageSets_US"/> -->
+    <include replace="22121918=17001;%STUDYPREFIX%=ExtraXA" href="_include_ImageSets.xml#ImageSets_XA"/>
+
+
+
+
+<!--
+    ******************************
+    Layouts
+    ******************************
+-->
+
+    <!--
+For each monitor configuration - there should be
+1 viewer per monitor (shown)
+2 viewers per monitor (hidden)
+4 viewers per monitor (hidden)
+6 viewers per monitor (shown)
+-->
+
+    <!-- Paperwork -->
+    <Layout LayoutId="304"
+            Name="Paperwork"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+    </Layout>
+
+    <!-- Paperwork -->
+    <Layout LayoutId="305"
+            Name="Paperwork"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1Paperwork" DefaultText="P1 Paperwork"/>
+
+    </Layout>
+
+    <!-- Paperwork -->
+    <Layout LayoutId="306"
+            Name="Paperwork"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1Paperwork" DefaultText="P1 Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P2Paperwork" DefaultText="P2 Paperwork"/>
+
+    </Layout>
+
+    <!-- Paperwork -->
+    <Layout LayoutId="307"
+            Name="Paperwork"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1Paperwork" DefaultText="P1 Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P2Paperwork" DefaultText="P2 Paperwork"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P3Paperwork" DefaultText="P3 Paperwork"/>
+
+    </Layout>
+
+    <!-- Key Views -->
+    <Layout LayoutId="308"
+            Name="Key Views"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrKeyViews" DefaultText="Key Views"/>
+    </Layout>
+
+    <!-- Key Views -->
+    <Layout LayoutId="309"
+            Name="Key Views"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrKeyViews" DefaultText="Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1KeyViews" DefaultText="P1 Key Views"/>
+
+    </Layout>
+
+    <!-- Key Views -->
+    <Layout LayoutId="310"
+            Name="Key Views"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrKeyViews" DefaultText="Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1KeyViews" DefaultText="P1 Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P2KeyViews" DefaultText="P2 Key Views"/>
+
+    </Layout>
+
+    <!-- Key Views -->
+    <Layout LayoutId="311"
+            Name="Key Views"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrKeyViews" DefaultText="Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P1KeyViews" DefaultText="P1 Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P2KeyViews" DefaultText="P2 Key Views"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="P3KeyViews" DefaultText="P3 Key Views"/>
+
+    </Layout>
+
+    <!-- Statics/Clips -->
+    <Layout LayoutId="500"
+            Name="Statics/Clips"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=1s;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Statics+Clips -->
+    <Layout LayoutId="501"
+            Name="Statics+Clips"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS+CLIPS" replace="%IMAGESET%=CurrAll2DImagesSorted;%TILEGROUP%=500;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- 1 Tile -->
+    <Layout LayoutId="1"
+            Name="1 Tile"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=1;%MINTILES%=1;%MAXTILES%=1"/>
+    </Layout>
+
+    <!-- 2 Tiles -->
+    <Layout LayoutId="2"
+            Name="2 Tiles"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 2 Tiles -->
+    <Layout LayoutId="3"
+            Name="2 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 3 Tiles -->
+    <Layout LayoutId="4"
+            Name="3 Tiles"
+            Monitors="3"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=3;%MINTILES%=3;%MAXTILES%=3"/>
+    </Layout>
+
+    <!-- 4 Tiles -->
+    <Layout LayoutId="5"
+            Name="4 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 4 Tiles -->
+    <Layout LayoutId="5b"
+            Name="4 Tiles"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 4 Tiles -->
+    <Layout LayoutId="5h"
+            Name="4 Tiles (H)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4"/>
+    </Layout>
+
+    <!-- 4 Tiles -->
+    <Layout LayoutId="6"
+            Name="4 Tiles"
+            Monitors="4"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 6 Tiles -->
+    <Layout LayoutId="7"
+            Name="6 Tiles"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 6 Tiles -->
+    <Layout LayoutId="8"
+            Name="6 Tiles"
+            Monitors="3"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 8 Tiles -->
+    <Layout LayoutId="9"
+            Name="8 Tiles"
+            Monitors="2 4"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=8;%MINTILES%=8;%MAXTILES%=8"/>
+    </Layout>
+
+    <!-- 9 Tiles -->
+    <Layout LayoutId="9new"
+            Name="9 Tiles"
+            Monitors="1"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=9new;%MINTILES%=9;%MAXTILES%=9"/>
+    </Layout>
+
+    <!-- 12 Tiles -->
+    <Layout LayoutId="10"
+            Name="12 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=12;%MINTILES%=12;%MAXTILES%=12"/>
+
+    </Layout>
+
+    <!-- 12 Tiles -->
+    <Layout LayoutId="11"
+            Name="12 Tiles"
+            Monitors="3"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=12;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 16 Tiles -->
+    <Layout LayoutId="12"
+            Name="16 Tiles"
+            Monitors="4"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=16;%MINTILES%=16;%MAXTILES%=16"/>
+    </Layout>
+
+    <!-- 18 Tiles -->
+    <Layout LayoutId="13"
+            Name="18 Tiles"
+            Monitors="3"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=18;%MINTILES%=18;%MAXTILES%=18"/>
+    </Layout>
+
+    <!-- 24 Tiles -->
+    <Layout LayoutId="14"
+            Name="24 Tiles"
+            Monitors="4"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=24;%MINTILES%=24;%MAXTILES%=24"/>
+    </Layout>
+
+    <!-- 1+6 Tiles -->
+    <Layout LayoutId="15"
+            Name="1+6 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            OnLayoutActivate="ScrollByOne()"
+            OnLayoutDeactivate="ScrollByPage()"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=15;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=15;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 1+12 Tiles -->
+    <Layout LayoutId="16"
+            Name="1+12 Tiles"
+            Monitors="3"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            OnLayoutActivate="ScrollByOne()"
+            OnLayoutDeactivate="ScrollByPage()"
+            Active="false"
+            Geometry="1third2thirds">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=16;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=16;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 1+18 Tiles -->
+    <Layout LayoutId="17"
+            Name="1+18 Tiles"
+            Monitors="4"
+            Default="Prio3"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            OnLayoutActivate="ScrollByOne()"
+            OnLayoutDeactivate="ScrollByPage()"
+            Active="false"
+            Geometry="1fourth3fourths">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=17;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=17;%MINTILES%=18;%MAXTILES%=18"/>
+    </Layout>
+
+    <!-- 1 Static -->
+    <Layout LayoutId="1s"
+            Name="1 Static"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=1s;%MINTILES%=1;%MAXTILES%=1"/>
+    </Layout>
+
+    <!-- 2 Statics -->
+    <Layout LayoutId="2s"
+            Name="2 Statics"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=2s;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 2 Statics -->
+    <Layout LayoutId="3s"
+            Name="2 Statics"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=2s;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 3 Statics -->
+    <Layout LayoutId="4s"
+            Name="3 Statics"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=3s;%MINTILES%=3;%MAXTILES%=3"/>
+    </Layout>
+
+    <!-- 4 Statics -->
+    <Layout LayoutId="5s"
+            Name="4 Statics"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=4s;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 4 Statics -->
+    <Layout LayoutId="6s"
+            Name="4 Statics"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=4s;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 6 Statics -->
+    <Layout LayoutId="7s"
+            Name="6 Statics"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=6s;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 6 Statics -->
+    <Layout LayoutId="8s"
+            Name="6 Statics"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=6s;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 8 Statics -->
+    <Layout LayoutId="9s"
+            Name="8 Statics"
+            Monitors="2 4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=8s;%MINTILES%=8;%MAXTILES%=8"/>
+    </Layout>
+
+    <!-- 12 Statics -->
+    <Layout LayoutId="10s"
+            Name="12 Statics"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=12s;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 12 Statics -->
+    <Layout LayoutId="11s"
+            Name="12 Statics"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=12s;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 16 Statics -->
+    <Layout LayoutId="12s"
+            Name="16 Statics"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=16s;%MINTILES%=16;%MAXTILES%=16"/>
+    </Layout>
+
+    <!-- 18 Statics -->
+    <Layout LayoutId="13s"
+            Name="18 Statics"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=18s;%MINTILES%=18;%MAXTILES%=18"/>
+    </Layout>
+
+    <!-- 24 Statics -->
+    <Layout LayoutId="14s"
+            Name="24 Statics"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=24s;%MINTILES%=24;%MAXTILES%=24"/>
+    </Layout>
+
+    <!-- 1 Clip -->
+    <Layout LayoutId="1c"
+            Name="1 Clip"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+    </Layout>
+
+    <!-- 2 Clips -->
+    <Layout LayoutId="2c"
+            Name="2 Clips"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=2c;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 2 Clips -->
+    <Layout LayoutId="3c"
+            Name="2 Clips"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=2c;%MINTILES%=2;%MAXTILES%=2"/>
+    </Layout>
+
+    <!-- 3 Clips -->
+    <Layout LayoutId="4c"
+            Name="3 Clips"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=3c;%MINTILES%=3;%MAXTILES%=3"/>
+    </Layout>
+
+    <!-- 4 Clips -->
+    <Layout LayoutId="5c"
+            Name="4 Clips"
+            Monitors="2"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=4c;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 4 Clips -->
+    <Layout LayoutId="6c"
+            Name="4 Clips"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=4c;%MINTILES%=4;%MAXTILES%=4"/>
+    </Layout>
+
+    <!-- 6 Clips -->
+    <Layout LayoutId="7c"
+            Name="6 Clips"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=6c;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 6 Clips -->
+    <Layout LayoutId="8c"
+            Name="6 Clips"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=6c;%MINTILES%=6;%MAXTILES%=6"/>
+    </Layout>
+
+    <!-- 8 Clips -->
+    <Layout LayoutId="9c"
+            Name="8 Clips"
+            Monitors="2 4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=8c;%MINTILES%=8;%MAXTILES%=8"/>
+    </Layout>
+
+    <!-- 12 Clips -->
+    <Layout LayoutId="10c"
+            Name="12 Clips"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=12c;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 12 Clips -->
+    <Layout LayoutId="11c"
+            Name="12 Clips"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=12c;%MINTILES%=12;%MAXTILES%=12"/>
+    </Layout>
+
+    <!-- 16 Clips -->
+    <Layout LayoutId="12c"
+            Name="16 Clips"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=16c;%MINTILES%=16;%MAXTILES%=16"/>
+    </Layout>
+
+    <!-- 18 Clips -->
+    <Layout LayoutId="13c"
+            Name="18 Clips"
+            Monitors="3"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=18c;%MINTILES%=18;%MAXTILES%=18"/>
+    </Layout>
+
+    <!-- 24 Clips -->
+    <Layout LayoutId="14c"
+            Name="24 Clips"
+            Monitors="4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=24c;%MINTILES%=24;%MAXTILES%=24"/>
+    </Layout>
+
+    <!-- 1 Tile +Docs -->
+    <Layout LayoutId="20"
+            Name="1 Tile +Docs"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrAll2DImages" DefaultText="CURRENT TILED"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 2 Tiles +Docs -->
+    <Layout LayoutId="21"
+            Name="2 Tiles +Docs"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="2thirds1third">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 3 Tiles +Docs -->
+    <Layout LayoutId="22"
+            Name="3 Tiles +Docs"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="3fourths1fourth">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=3;%MINTILES%=3;%MAXTILES%=3"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 6 Tiles +Docs -->
+    <Layout LayoutId="23"
+            Name="6 Tiles +Docs"
+            Monitors="2"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 12 Tiles +Docs -->
+    <Layout LayoutId="24"
+            Name="12 Tiles +Docs"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="2thirds1third">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=12;%MINTILES%=12;%MAXTILES%=12"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 18 Tiles +Docs -->
+    <Layout LayoutId="25"
+            Name="18 Tiles +Docs"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrPaperwork"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="3fourths1fourth">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=18;%MINTILES%=18;%MAXTILES%=18"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetId="CurrPaperwork" DefaultText="Paperwork"/>
+
+    </Layout>
+
+    <!-- 3D Series -->
+    <Layout LayoutId="40"
+            Name="3D Series"
+            Monitors="1 2 3 4"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Auto" DefaultText="CURRENT 3D" replace="%IMAGESET%=CurrAll3DSeries;%MINVIEWERS%=1;%MAXVIEWERS%=16"/>
+    </Layout>
+
+    <!-- MPR + 3D MIP -->
+    <Layout LayoutId="41"
+            Name="MPR + 3D MIP"
+            Monitors="1 2"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="2x1|2x1">
+
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_SAG_LINK" DefaultText="VISAGE SAG MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_3DMIP_LINK" DefaultText="VISAGE 3D MIP" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_COR_LINK" DefaultText="VISAGE COR MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+
+    </Layout>
+
+    <!-- MPR + 3D MIP -->
+    <Layout LayoutId="42"
+            Name="MPR + 3D MIP"
+            Monitors="3"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x2|1x1">
+
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_SAG_LINK" DefaultText="VISAGE SAG MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_3DMIP_LINK" DefaultText="VISAGE 3D MIP" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_COR_LINK" DefaultText="VISAGE COR MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+
+    </Layout>
+
+    <!-- MPR + 3D MIP -->
+    <Layout LayoutId="43"
+            Name="MPR + 3D MIP"
+            Monitors="4"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_SAG_LINK" DefaultText="VISAGE SAG MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_3DMIP_LINK" DefaultText="VISAGE 3D MIP" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_COR_LINK" DefaultText="VISAGE COR MPR" replace="%IMAGESET%=CurrAll3DSeries;%GROUP%=1"/>
+
+    </Layout>
+    
+    <!-- Compare Statics/Clips without tiled viewers so you can browse continously through the whole stack without stopping-->
+    <Layout LayoutId="5101"
+            Name="Statics/Clips"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+
+    </Layout>
+
+    <!-- Compare Statics/Clips -->
+    <Layout LayoutId="510"
+            Name="Compare Statics/Clips"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+
+    </Layout>
+
+    <!-- Compare 4 Statics+Clips -->
+    <Layout LayoutId="511"
+            Name="Compare 4 Statics+Clips"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS+CLIPS" replace="%IMAGESET%=CurrAll2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS+CLIPS" replace="%IMAGESET%=P1All2DImagesSorted"/>
+
+    </Layout>
+
+    <!-- Compare 4 Statics+Clips -->
+    <Layout LayoutId="512"
+            Name="Compare 4 Statics+Clips"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS/CLIPS" replace="%IMAGESET%=CurrAll2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS+CLIPS" replace="%IMAGESET%=P1All2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS+CLIPS" replace="%IMAGESET%=P2All2DImagesSorted"/>
+
+    </Layout>
+
+    <!-- Compare 4 Statics+Clips -->
+    <Layout LayoutId="513"
+            Name="Compare 4 Statics+Clips"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS/CLIPS" replace="%IMAGESET%=CurrAll2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS/CLIPS" replace="%IMAGESET%=P1All2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS+CLIPS" replace="%IMAGESET%=P2All2DImagesSorted"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS+CLIPS" replace="%IMAGESET%=P3All2DImagesSorted"/>
+
+
+    </Layout>
+
+    <!-- Compare Statics/Clips (80% statics zoom) ========================== -->
+    <!-- Static panels open at 80% zoom; clip panels at default (100%) zoom. -->
+    <!-- Mirrors layouts 5101/510/512/513 with Zoom="80%" on statics only.  -->
+
+    <!-- 1 monitor, portrait -->
+    <Layout LayoutId="5201"
+            Name="Compare Statics/Clips (80% statics)"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+
+    </Layout>
+
+    <!-- 2 monitors, landscape -->
+    <Layout LayoutId="5210"
+            Name="Compare Statics/Clips (80% statics)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+
+    </Layout>
+
+    <!-- 3 monitors -->
+    <Layout LayoutId="5212"
+            Name="Compare Statics/Clips (80% statics)"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+
+    </Layout>
+
+    <!-- 4 monitors -->
+    <Layout LayoutId="5213"
+            Name="Compare Statics/Clips (80% statics)"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS" replace="%IMAGESET%=P3AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 CLIPS" replace="%IMAGESET%=P3AllClips"/>
+
+    </Layout>
+
+    
+
+    <!-- Compare 1 Tile -->
+    <Layout LayoutId="100"
+            Name="Compare 1"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages"
+            ConditionAction="NoDefault"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages"/>
+
+    </Layout>
+
+    <!-- Compare 1 Tile -->
+    <Layout LayoutId="101"
+            Name="Compare 1"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages"
+            ConditionAction="NoDefault"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages"/>
+
+    </Layout>
+
+    <!-- Compare 1 Tile -->
+    <Layout LayoutId="102"
+            Name="Compare 1"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages"
+            ConditionAction="NoDefault"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages"/>
+
+    </Layout>
+
+    <!-- Compare 1 Tile -->
+    <Layout LayoutId="103"
+            Name="Compare 1"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages"
+            ConditionAction="NoDefault"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages"/>
+
+    </Layout>
+
+    <!-- Compare 2 Tiles -->
+    <Layout LayoutId="104"
+            Name="Compare 2 Tiles"
+            Monitors="1 2"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="P1All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=102;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 Tiles -->
+    <Layout LayoutId="105"
+            Name="Compare 2 Tiles"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages P2All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=102;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=202;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 Tiles -->
+    <Layout LayoutId="106"
+            Name="Compare 2 Tiles"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages P2All2DImages P3All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=2;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=102;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=202;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=302;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 4 Tiles -->
+    <Layout LayoutId="107"
+            Name="Compare 4 Tiles"
+            AspectRatio="landscape"
+            Monitors="1 2"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=104;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 1+4 Tiles -->
+    <Layout LayoutId="107b"
+            Name="Compare 1+4 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Active="false"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=1;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=101;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=201;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=301;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P4 TILED" replace="%IMAGESET%=P4All2DImages;%TILEGROUP%=401;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 4 Tiles -->
+    <Layout LayoutId="108"
+            Name="Compare 4 Tiles"
+            Monitors="3"
+            Default="Prio2"
+            ConditionArgs="P1All2DImages P2All2DImages"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=104;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=204;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 4 Tiles -->
+    <Layout LayoutId="109"
+            Name="Compare 4 Tiles"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages P2All2DImages P3All2DImages"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=104;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=204;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=304;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 6 Tiles -->
+    <Layout LayoutId="110"
+            Name="Compare 6 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 Tiles -->
+    <Layout LayoutId="111"
+            Name="Compare 6 Tiles"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages P2All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 Tiles -->
+    <Layout LayoutId="112"
+            Name="Compare 6 Tiles"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImages P2All2DImages P3All2DImages"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=306;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 9 Tiles -->
+    <Layout LayoutId="110new"
+            Name="Compare 9 Tiles"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=110new;%MINTILES%=9;%MAXTILES%=9"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=110newp1;%MINTILES%=9;%MAXTILES%=9"/>
+
+    </Layout>
+
+    <!-- Compare 4 Tile + 4P -->
+    <Layout LayoutId="113"
+            Name="Compare 4 Tile + 4P"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages P4All2DImages"
+            ConditionAction="NoDefault"
+            Active="false"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=101;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=201;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=301;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P4 TILED" replace="%IMAGESET%=P4All2DImages;%TILEGROUP%=401;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 4 Tile + 4P -->
+    <Layout LayoutId="114"
+            Name="Compare 4 Tile + 4P"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="P1All2DImqes P2All2DImages P3All2DImages P4All2DImages"
+            ConditionAction="NoDefault"
+            Active="false"
+            Geometry="1x1|2x2|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=114;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=115"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=116"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=115"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=116"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=117"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P4 TILED" replace="%IMAGESET%=P4All2DImages;%TILEGROUP%=118"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P3 TILED" replace="%IMAGESET%=P3All2DImages;%TILEGROUP%=117"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="P4 TILED" replace="%IMAGESET%=P4All2DImages;%TILEGROUP%=118"/>
+
+
+    </Layout>
+
+    <!-- Compare 1 (Static) -->
+    <Layout LayoutId="100s"
+            Name="Compare 1 (Static)"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Static) -->
+    <Layout LayoutId="101s"
+            Name="Compare 1 (Static)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Static) -->
+    <Layout LayoutId="102s"
+            Name="Compare 1 (Static)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Static) -->
+    <Layout LayoutId="103s"
+            Name="Compare 1 (Static)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics P3AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS TILED" replace="%IMAGESET%=P3AllStatics"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Static) -->
+    <Layout LayoutId="104s"
+            Name="Compare 2 (Static)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=2s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=102s;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Static) -->
+    <Layout LayoutId="105s"
+            Name="Compare 2 (Static)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=2s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=102s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=202s;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Static) -->
+    <Layout LayoutId="106s"
+            Name="Compare 2 (Static)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics P3AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=2s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=102s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=202s;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 STATICS TILED" replace="%IMAGESET%=P3AllStatics;%TILEGROUP%=302s;%MINTILES%=2;%MAXTILES%=2"/>
+
+
+    </Layout>
+
+    <!-- Compare 4 (Static) -->
+    <Layout LayoutId="107s"
+            Name="Compare 4 (Static)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=4s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=104s;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 4 (Static) -->
+    <Layout LayoutId="108s"
+            Name="Compare 4 (Static)"
+            Monitors="3"
+            Default="Prio3"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=4s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=104s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=204s;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 4 (Static) -->
+    <Layout LayoutId="109s"
+            Name="Compare 4 (Static)"
+            Monitors="4"
+            Default="Prio3"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=4s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=104s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=204s;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 STATICS TILED" replace="%IMAGESET%=P3AllStatics;%TILEGROUP%=304s;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Static) -->
+    <Layout LayoutId="110s"
+            Name="Compare 6 (Static)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=6s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=106s;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Static) -->
+    <Layout LayoutId="111s"
+            Name="Compare 6 (Static)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=6s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=106s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=206s;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Static) -->
+    <Layout LayoutId="112s"
+            Name="Compare 6 (Static)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics P2AllStatics P3AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=6s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS TILED" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=106s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 STATICS TILED" replace="%IMAGESET%=P2AllStatics;%TILEGROUP%=206s;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 STATICS TILED" replace="%IMAGESET%=P3AllStatics;%TILEGROUP%=306s;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Clip) -->
+    <Layout LayoutId="100c"
+            Name="Compare 1 (Clip)"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=101c;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Clip) -->
+    <Layout LayoutId="101c"
+            Name="Compare 1 (Clip)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=101c;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Clip) -->
+    <Layout LayoutId="102c"
+            Name="Compare 1 (Clip)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=101c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=201c;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 1 (Clip) -->
+    <Layout LayoutId="103c"
+            Name="Compare 1 (Clip)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=1c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=101c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=201c;%MINTILES%=1;%MAXTILES%=1"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 CLIPS TILED" replace="%IMAGESET%=P3AllClips;%TILEGROUP%=301c;%MINTILES%=1;%MAXTILES%=1"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Clips) -->
+    <Layout LayoutId="104c"
+            Name="Compare 2 (Clips)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=2c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=102c;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Clips) -->
+    <Layout LayoutId="105c"
+            Name="Compare 2 (Clips)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=2c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=102c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=202c;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 2 (Clips) -->
+    <Layout LayoutId="106c"
+            Name="Compare 2 (Clips)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=2c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=102c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=202c;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 CLIPS TILED" replace="%IMAGESET%=P3AllClips;%TILEGROUP%=302c;%MINTILES%=2;%MAXTILES%=2"/>
+
+    </Layout>
+
+    <!-- Compare 4 (Clips) -->
+    <Layout LayoutId="107c"
+            Name="Compare 4 (Clips)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=4c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=104c;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 4 (Clips) -->
+    <Layout LayoutId="108c"
+            Name="Compare 4 (Clips)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=4c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=104c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=204c;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 4 (Clips) -->
+    <Layout LayoutId="109c"
+            Name="Compare 4 (Clips)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=4c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=104c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=204c;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 CLIPS TILED" replace="%IMAGESET%=P3AllClips;%TILEGROUP%=304c;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Clips) -->
+    <Layout LayoutId="110c"
+            Name="Compare 6 (Clips)"
+            Monitors="1 2"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=6c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=106c;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Clips) -->
+    <Layout LayoutId="111c"
+            Name="Compare 6 (Clips)"
+            Monitors="3"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=6c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=106c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=206c;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 6 (Clips) -->
+    <Layout LayoutId="112c"
+            Name="Compare 6 (Clips)"
+            Monitors="4"
+            Default="Prio3"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips P1AllClips"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CLIPS TILED" replace="%IMAGESET%=CurrAllClips;%TILEGROUP%=6c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 CLIPS TILED" replace="%IMAGESET%=P1AllClips;%TILEGROUP%=106c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 CLIPS TILED" replace="%IMAGESET%=P2AllClips;%TILEGROUP%=206c;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P3 CLIPS TILED" replace="%IMAGESET%=P3AllClips;%TILEGROUP%=306c;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare 3D -->
+    <Layout LayoutId="150"
+            Name="Compare 3D"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio3"
+            Condition="AnyImageMissing"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Auto" DefaultText="CURRENT 3D" replace="%IMAGESET%=CurrAll3DSeries;%MINVIEWERS%=1;%MAXVIEWERS%=8"/>
+        <include href="_include_DisplaySets.xml#_2D_Auto" DefaultText="P1 3D" replace="%IMAGESET%=P1All3DSeries;%MINVIEWERS%=1;%MAXVIEWERS%=8"/>
+
+    </Layout>
+
+    <!-- Compare 3D -->
+    <Layout LayoutId="151"
+            Name="Compare 3D"
+            Monitors="1 2 4"
+            AspectRatio="landscape"
+            Default="Prio3"
+            Condition="AnyImageMissing"
+            ConditionAction="Hide"
+            Geometry="2x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Auto" DefaultText="CURRENT 3D" replace="%IMAGESET%=CurrAll3DSeries;%MINVIEWERS%=1;%MAXVIEWERS%=8"/>
+        <include href="_include_DisplaySets.xml#_2D_Auto" DefaultText="P1 3D" replace="%IMAGESET%=P1All3DSeries;%MINVIEWERS%=1;%MAXVIEWERS%=8"/>
+
+    </Layout>
+
+    <!-- Compare Horizontal -->
+    <Layout LayoutId="152"
+            Name="Compare Horizontal"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllSeries"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=4;%MINTILES%=4;%MAXTILES%=4"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=104;%MINTILES%=4;%MAXTILES%=4"/>
+
+    </Layout>
+
+    <!-- Compare Horizontal -->
+    <Layout LayoutId="153"
+            Name="Compare Horizontal"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllSeries"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+
+    </Layout>
+
+    <!-- Compare Horizontal -->
+    <Layout LayoutId="154"
+            Name="Compare Horizontal"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllSeries"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=8;%MINTILES%=8;%MAXTILES%=8"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=108;%MINTILES%=8;%MAXTILES%=8"/>
+
+    </Layout>
+
+    <!-- Other Series -->
+    <Layout LayoutId="200"
+            Name="Other Series"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto" DefaultText="CURRENT OTHER" replace="%IMAGESET%=CurrOther;%TILEGROUP%=91"/>
+    </Layout>
+
+    <!-- Other Series -->
+    <Layout LayoutId="201"
+            Name="Other Series"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT OTHER" replace="%IMAGESET%=CurrOther"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 OTHER SERIES" replace="%IMAGESET%=P1Other"/>
+
+    </Layout>
+
+    <!-- Other Series -->
+    <Layout LayoutId="132"
+            Name="Other Series"
+            Monitors="3"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT OTHER" replace="%IMAGESET%=CurrOther"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 OTHER SERIES" replace="%IMAGESET%=P1Other"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 OTHER SERIES" replace="%IMAGESET%=P2Other"/>
+
+    </Layout>
+
+    <!-- Other Series -->
+    <Layout LayoutId="133"
+            Name="Other Series"
+            Monitors="4"
+            Default="False"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CURRENT OTHER" replace="%IMAGESET%=CurrOther"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 OTHER SERIES" replace="%IMAGESET%=P1Other"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 OTHER SERIES" replace="%IMAGESET%=P2Other"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 OTHER SERIES" replace="%IMAGESET%=P3Other"/>
+
+    </Layout>
+
+    <!--
+     *********************************************************************
+     "Extra" layouts for side-by-side viewing of additionally loaded exams
+     *********************************************************************
+    -->
+
+    <!--****************** Extra NM ******************-->
+
+    <!-- + SPECT -->
+    <Layout LayoutId="10000"
+            Name="+ SPECT"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT"/>
+    </Layout>
+
+    <!-- + SPECT -->
+    <Layout LayoutId="10001"
+            Name="+ SPECT"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT"/>
+
+    </Layout>
+
+    <!-- + SPECT -->
+    <Layout LayoutId="10002"
+            Name="+ SPECT"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT"/>
+
+    </Layout>
+
+    <!-- + SPECT -->
+    <Layout LayoutId="10003"
+            Name="+ SPECT"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT"/>
+
+    </Layout>
+
+    <!-- + NM ScrCap -->
+    <Layout LayoutId="10004"
+            Name="+ NM ScrCap"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMScreenCaptures"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_ScrCap"/>
+    </Layout>
+
+    <!-- + NM ScrCap -->
+    <Layout LayoutId="10005"
+            Name="+ NM ScrCap"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMScreenCaptures"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_ScrCap"/>
+
+    </Layout>
+
+    <!-- + NM ScrCap -->
+    <Layout LayoutId="10006"
+            Name="+ NM ScrCap"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMScreenCaptures"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_ScrCap"/>
+
+    </Layout>
+
+    <!-- + NM ScrCap -->
+    <Layout LayoutId="10007"
+            Name="+ NM ScrCap"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMScreenCaptures"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_ScrCap"/>
+
+    </Layout>
+
+    <!-- + SPECT-CT -->
+    <Layout LayoutId="10008"
+            Name="+ SPECT-CT"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMCTVolume ExtraNMNMVolume"
+            ConditionAction="Hide"
+            Geometry="2x2">
+
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT_CT"/>
+
+    </Layout>
+
+    <!-- + SPECT-CT -->
+    <Layout LayoutId="10009"
+            Name="+ SPECT-CT"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMCTVolume ExtraNMNMVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT_CT"/>
+
+    </Layout>
+
+    <!-- + SPECT-CT -->
+    <Layout LayoutId="10010"
+            Name="+ SPECT-CT"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMCTVolume ExtraNMNMVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT_CT"/>
+
+    </Layout>
+
+    <!-- + SPECT-CT -->
+    <Layout LayoutId="10011"
+            Name="+ SPECT-CT"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraNMCTVolume ExtraNMNMVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_NM_SPECT_CT"/>
+
+    </Layout>
+
+    <!--****************** Extra PET-CT ******************-->
+
+    <!-- + PET-CT -->
+    <Layout LayoutId="11001"
+            Name="+ PET-CT"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraPTCTVolume ExtraPTPTVolume"
+            ConditionAction="Hide"
+            Geometry="2x2">
+
+        <include href="_include_MultiModality.xml#ExtraLayout_PET_CT"/>
+
+    </Layout>
+
+    <!-- + PET-CT -->
+    <Layout LayoutId="11002"
+            Name="+ PET-CT"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraPTCTVolume ExtraPTPTVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PET_CT"/>
+
+    </Layout>
+
+    <!-- + PET-CT -->
+    <Layout LayoutId="11003"
+            Name="+ PET-CT"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraPTCTVolume ExtraPTPTVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PET_CT"/>
+
+    </Layout>
+
+    <!-- + PET-CT -->
+    <Layout LayoutId="11004"
+            Name="+ PET-CT"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraPTCTVolume ExtraPTPTVolume"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PET_CT"/>
+
+    </Layout>
+
+    <!--****************** Extra CT Thin ******************-->
+
+    <!-- + CT (MPR) -->
+    <Layout LayoutId="12001"
+            Name="+ CT (MPR)"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeriesThinnest"
+            ConditionAction="Hide"
+            Geometry="2x2">
+
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thin"/>
+
+    </Layout>
+
+    <!-- + CT (MPR) -->
+    <Layout LayoutId="12002"
+            Name="+ CT (MPR)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeriesThinnest"
+            ConditionAction="Hide"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thin"/>
+
+    </Layout>
+
+    <!-- + CT (MPR) -->
+    <Layout LayoutId="12003"
+            Name="+ CT (MPR)"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeriesThinnest"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thin"/>
+
+    </Layout>
+
+    <!-- + CT (MPR) -->
+    <Layout LayoutId="12004"
+            Name="+ CT (MPR)"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeriesThinnest"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thin"/>
+
+    </Layout>
+
+    <!--****************** Extra CT Thick ******************-->
+
+    <!-- + CT -->
+    <Layout LayoutId="12005"
+            Name="+ CT"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thick"/>
+    </Layout>
+
+    <!-- + CT -->
+    <Layout LayoutId="12006"
+            Name="+ CT"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thick"/>
+
+    </Layout>
+
+    <!-- + CT (Tech MPR -->
+    <Layout LayoutId="12006b"
+            Name="+ CT (Tech MPR)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|3T">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetSelect.Condition="View_Axial" ImageSetId="ExtraCTAllSeries" DefaultText="P1 (CT) AX"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetSelect.Condition="View_Sagittal" ImageSetId="ExtraCTAllSeries" DefaultText="P1 (CT) SAG"/>
+        <include href="_include_DisplaySets.xml#_2D" ImageSetSelect.Condition="View_Coronal" ImageSetId="ExtraCTAllSeries" DefaultText="P1 (CT) COR"/>
+
+    </Layout>
+
+    <!-- + CT -->
+    <Layout LayoutId="12007"
+            Name="+ CT"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thick"/>
+
+    </Layout>
+
+    <!-- + CT -->
+    <Layout LayoutId="12008"
+            Name="+ CT"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCTAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_CT_Thick"/>
+
+    </Layout>
+
+    <!--****************** Extra MR ******************-->
+
+    <!-- + MR -->
+    <Layout LayoutId="13001"
+            Name="+ MR"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMRAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_MultiModality.xml#ExtraLayout_MR"/>
+    </Layout>
+
+    <!-- + MR -->
+    <Layout LayoutId="13002"
+            Name="+ MR"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMRAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MR"/>
+
+    </Layout>
+
+    <!-- + MR -->
+    <Layout LayoutId="13003"
+            Name="+ MR"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMRAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MR"/>
+
+    </Layout>
+
+    <!-- + MR -->
+    <Layout LayoutId="13004"
+            Name="+ MR"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMRAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MR"/>
+
+    </Layout>
+
+    <!--****************** Extra Mammo ******************-->
+
+    <!-- + Mammography -->
+    <Layout LayoutId="14001"
+            Name="+ Mammography"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMGR-CC ExtraMGL-CC ExtraMGR-MLO ExtraMGL-MLO"
+            ConditionAction="Hide"
+            Geometry="2x2">
+
+        <include href="_include_MultiModality.xml#ExtraLayout_MG"/>
+
+    </Layout>
+
+    <!-- + Mammography -->
+    <Layout LayoutId="14002"
+            Name="+ Mammography"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMGR-CC ExtraMGL-CC ExtraMGR-MLO ExtraMGL-MLO"
+            ConditionAction="Hide"
+            Geometry="1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MG"/>
+
+    </Layout>
+
+    <!-- + Mammography -->
+    <Layout LayoutId="14003"
+            Name="+ Mammography"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMGR-CC ExtraMGL-CC ExtraMGR-MLO ExtraMGL-MLO"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MG"/>
+
+    </Layout>
+
+    <!-- + Mammography -->
+    <Layout LayoutId="14004"
+            Name="+ Mammography"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraMGR-CC ExtraMGL-CC ExtraMGR-MLO ExtraMGL-MLO"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|2x2">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_MG"/>
+
+    </Layout>
+
+
+
+    <!--****************** Extra PlainFilm ******************-->
+
+    <!-- + Plain Film -->
+    <Layout LayoutId="15001"
+            Name="+ Plain Film"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCRAllImagesStacked"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=2;%MAXTILES%=2"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PlainFilm"/>
+    </Layout>
+
+    <!-- + Plain Film -->
+    <Layout LayoutId="15002"
+            Name="+ Plain Film"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCRAllImagesStacked"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PlainFilm"/>
+
+    </Layout>
+
+    <!-- + Plain Film -->
+    <Layout LayoutId="15003"
+            Name="+ Plain Film"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCRAllImagesStacked"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PlainFilm"/>
+
+    </Layout>
+
+    <!-- + Plain Film -->
+    <Layout LayoutId="15004"
+            Name="+ Plain Film"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraCRAllImagesStacked"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_PlainFilm"/>
+
+    </Layout>
+
+    <!--****************** Extra XA ******************-->
+
+    <!-- + XA -->
+    <Layout LayoutId="17001"
+            Name="+ XA"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraXAAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1">
+        <include href="_include_MultiModality.xml#ExtraLayout_XA"/>
+    </Layout>
+
+    <!-- + XA -->
+    <Layout LayoutId="17002"
+            Name="+ XA"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraXAAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_XA"/>
+
+    </Layout>
+
+    <!-- + XA -->
+    <Layout LayoutId="17003"
+            Name="+ XA"
+            Monitors="3"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraXAAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_XA"/>
+
+    </Layout>
+
+    <!-- + XA -->
+    <Layout LayoutId="17004"
+            Name="+ XA"
+            Monitors="4"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="ExtraXAAllSeries"
+            ConditionAction="Hide"
+            Geometry="1x1|1x1|1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="CURRENT TILED" replace="%IMAGESET%=CurrAll2DImages;%TILEGROUP%=6;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 TILED" replace="%IMAGESET%=P1All2DImages;%TILEGROUP%=106;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P2 TILED" replace="%IMAGESET%=P2All2DImages;%TILEGROUP%=206;%MINTILES%=6;%MAXTILES%=6"/>
+        <include href="_include_MultiModality.xml#ExtraLayout_XA"/>
+
+    </Layout>
+
+
+
+<!--
+    ******************************
+    DisplaySets
+    ******************************
+-->
+
+
+
+
+<!--
+    ******************************
+    ToolBars
+    ******************************
+-->
+
+    <ToolBars>
+        <ToolBar Row="1" State="on" Id="workflow" Label="Workflow"/>
+        <ToolBar Row="1" State="on" Id="standard_plainfilm" Label="Standard Tools (Plain Film)"/>
+        <ToolBar Row="1" State="on" Id="annotation_measurement_plainfilm" Label="Annotation and Measurement (Plain Film)"/>
+        <ToolBar Row="1" State="on" Id="custom_us" Label="Custom (US)"/>
+        <ToolBar Row="1" State="on" Id="info" Label="Information"/>
+        <ToolBar Row="2" State="on" Id="layouts" Label="Layouts"/>
+        <ToolBar Row="2" State="off" Id="labels" Label="Labels"/>
+        <ToolBar Row="2" State="off" Id="annotation_measurement" Label="Annotation and Measurement (All)"/>
+        <ToolBar Row="2" State="off" Id="annotation_measurement_mammo" Label="Annotation and Measurement (Mammography)"/>
+        <ToolBar Row="2" State="off" Id="annotation_measurement_ctmr" Label="Annotation and Measurement (CT/MR)"/>
+        <ToolBar Row="2" State="off" Id="batching" Label="Batching"/>
+        <ToolBar Row="2" State="off" Id="brain_perfusion" Label="Brain Perfusion"/>
+        <ToolBar Row="2" State="off" Id="cine" Label="Cine"/>
+        <ToolBar Row="2" State="off" Id="clip" Label="Clipping"/>
+        <ToolBar Row="2" State="off" Id="crop_remove" Label="Crop / Remove"/>
+        <ToolBar Row="2" State="off" Id="crop_freehand" Label="Crop (Freehand)"/>
+        <ToolBar Row="2" State="off" Id="dataset_navigation" Label="Data Navigation"/>
+        <ToolBar Row="2" State="off" Id="fusion_registration" Label="Fusion Registration"/>
+        <ToolBar Row="2" State="off" Id="imageqa" Label="Image Content QA"/>
+        <ToolBar Row="2" State="off" Id="img_fit" Label="Image Fit"/>
+        <ToolBar Row="2" State="off" Id="img_flip_rotate" Label="Image Flip and Rotate"/>
+        <ToolBar Row="2" State="off" Id="img_orientation" Label="Image Orientation"/>
+        <ToolBar Row="2" State="off" Id="img_quality" Label="Image Quality"/>
+        <ToolBar Row="2" State="off" Id="keyviews" Label="Key Views"/>
+        <ToolBar Row="2" State="off" Id="keyviews_nav" Label="Key Views (Prev/Next))"/>
+        <ToolBar Row="2" State="off" Id="lesion" Label="Lesions"/>
+        <ToolBar Row="2" State="off" Id="multiphase" Label="Multi Phase"/>
+        <ToolBar Row="2" State="off" Id="magnifier" Label="Magnifying Glass"/>
+        <ToolBar Row="2" State="off" Id="priors" Label="Study Navigator"/>
+        <ToolBar Row="2" State="off" Id="reports" Label="Reports"/>
+        <ToolBar Row="2" State="off" Id="browse" Label="Scroll Page by Page"/>
+        <ToolBar Row="2" State="off" Id="showinviewer" Label="Show in Viewer"/>
+        <ToolBar Row="2" State="off" Id="snapshots_all" Label="Screenshots (all)"/>
+        <ToolBar Row="2" State="off" Id="snapshots" Label="Screenshots (drop-down)"/>
+        <ToolBar Row="2" State="off" Id="standard_ctmr" Label="Standard Tools (CT/MR)"/>
+        <ToolBar Row="2" State="off" Id="standard_thin" Label="Standard Tools (CT Thin Slice)"/>
+        <ToolBar Row="2" State="off" Id="settarget" Label="Target Tool"/>
+        <ToolBar Row="2" State="off" Id="triangulation" Label="Triangulation"/>
+        <ToolBar Row="2" State="off" Id="cpr_vessel" Label="Vessel and CPR"/>
+        <ToolBar Row="2" State="off" Id="cpr_vessel_adv" Label="Vessel and CPR (+)"/>
+        <ToolBar Row="2" State="off" Id="tools_ct3d" Label="Tools (CT 3D)"/>
+        <ToolBar Row="2" State="off" Id="tools_ct_cardiac" Label="Tools (CT Cardiac)"/>
+        <ToolBar Row="2" State="off" Id="tools_petct" Label="Tools (PETCT)"/>
+        <ToolBar Row="2" State="off" Id="tools_lesiontracking" Label="Tools (Lesion Tracking)"/>
+        <ToolBar Row="2" State="off" Id="tools_perfusion" Label="Tools (Perfusion)"/>
+        <ToolBar Row="2" State="off" Id="linking_basic" Label="Viewer Linking (Basic Protocols)"/>
+        <ToolBar Row="2" State="off" Id="linking_advanced" Label="Viewer Linking (Advanced Protocols)"/>
+        <ToolBar Row="2" State="off" Id="linking_quick" Label="Viewer Linking - Group Editing"/>
+        <ToolBar Row="2" State="off" Id="custom_xa" Label="Custom (XA)"/>
+        <ToolBar Row="2" State="off" Id="custom_mg" Label="Custom (MG)"/>
+        <ToolBar Row="2" State="off" Id="custom_plainfilm" Label="Custom (Plain Film)"/>
+    </ToolBars>
+
+
+<!--
+    ******************************
+    ToolCards
+    ******************************
+-->
+
+    <ToolCards>
+        <Region Monitor="1" NumSubRegions="2" Dividers="0.5" State="off" Location="R" Orientation="Vertical" Size="412">
+            <Card Id="display" SubRegion="1" Selected="false"/>
+            <Card Id="Cine" SubRegion="1" Selected="true"/>
+            <Card Id="roi_stats" SubRegion="2" Selected="true"/>
+        </Region>
+        <Region Monitor="1" NumSubRegions="1" Dividers="" State="on" Location="B" Orientation="Horizontal" Size="110">
+            <Card Id="image_series" SubRegion="1" Selected="false"/>
+        </Region>
+    </ToolCards>
+
+
+<!--
+    ******************************
+    Properties
+    ******************************
+-->
+
+    <Properties>
+        <!-- ultrasound images have a lot of burnt-in information, so disable some overlays for viewing -->
+        <Property Name="UI.ShowInAll.OrientationCube" Value="false"/>
+        <Property Name="UI.Viewers2D.ViewerControls" Value="false"/>
+        <Property Name="UI.Viewers2D.ViewerControlsTiled" Value="false"/>
+        <Property Name="UI.ShowInAll.Scale" Value="false"/>
+        <Property Name="Magnifier.InitialMagLevel" Value="2.0"/>
+        <Property Name="Magnifier.InitialMagRelativeTo" Value="CURRENT_ZOOM"/>
+        <Property Name="Tools.BrowseSlice.MouseWheelMode" Value="true"/>
+        <Property Name="Tools.BrowseSlice.MultiFrameMode" Value="true"/>
+        <Property Name="UI.ShowInAll.Category2" Value="false"/>
+        <Property Name="UI.ShowInAll.Category3" Value="false"/>
+        <Property Name="UI.ShowInAll.Category4" Value="false"/>
+        <Property Name="Hidden.Cine.UpdateAllViewers" Value="false"/>
+    </Properties>
+</HangingProtocol>
