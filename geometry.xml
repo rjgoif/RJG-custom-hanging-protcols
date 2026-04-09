@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+
+<NotAProtocol>
+
+
+
+<LayoutGeometry Name="3T_sag1third">
+    0.0    1.0    1.0    0.5,
+    0.0    0.5    0.33333    0.0,
+    0.33333    0.5    1.0    0.0
+</LayoutGeometry>
+
+<LayoutGeometry Name="3T_vessel2thirds">
+    0.0    1.0    1.0    0.5,
+    0.0    0.5    0.66667    0.0,
+    0.66667    0.5    1.0    0.0
+</LayoutGeometry>
+
+</NotAProtocol>
