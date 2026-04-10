@@ -2353,9 +2353,10 @@ For each monitor configuration - there should be
             Default="Prio4"
             Geometry="1x2|1x2">
 
+        <!-- Mon1 row1, Mon2 row1, Mon1 row2, Mon2 row2 → cross-monitor row-first order: Curr P1 | P2 P3 -->
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAllSeriesThinnest;%GROUP%=1"/>
-        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P1 VISAGE AX MPR" replace="%IMAGESET%=P1AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P2 VISAGE AX MPR" replace="%IMAGESET%=P2AllSeriesThinnest;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P1 VISAGE AX MPR" replace="%IMAGESET%=P1AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P3 VISAGE AX MPR" replace="%IMAGESET%=P3AllSeriesThinnest;%GROUP%=1"/>
 
     </Layout>
@@ -2368,13 +2369,16 @@ For each monitor configuration - there should be
             Default="Prio4"
             Geometry="2x2|2x2">
 
+        <!-- Mon1: row1col1=Curr, row1col2=P1, row2col1=P4, row2col2=P5 -->
+        <!-- Mon2: row1col3=P2,   row1col4=P3,  row2col3=P6, row2col4=P7 -->
+        <!-- → cross-monitor row-first: Curr P1 P2 P3 / P4 P5 P6 P7 -->
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P1 VISAGE AX MPR" replace="%IMAGESET%=P1AllSeriesThinnest;%GROUP%=1"/>
-        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P2 VISAGE AX MPR" replace="%IMAGESET%=P2AllSeriesThinnest;%GROUP%=1"/>
-        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P3 VISAGE AX MPR" replace="%IMAGESET%=P3AllSeriesThinnest;%GROUP%=1"/>
-
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P4 VISAGE AX MPR" replace="%IMAGESET%=P4AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P5 VISAGE AX MPR" replace="%IMAGESET%=P5AllSeriesThinnest;%GROUP%=1"/>
+
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P2 VISAGE AX MPR" replace="%IMAGESET%=P2AllSeriesThinnest;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P3 VISAGE AX MPR" replace="%IMAGESET%=P3AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P6 VISAGE AX MPR" replace="%IMAGESET%=P6AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P7 VISAGE AX MPR" replace="%IMAGESET%=P7AllSeriesThinnest;%GROUP%=1"/>
 
@@ -2406,12 +2410,15 @@ For each monitor configuration - there should be
             Default="Prio4"
             Geometry="1x3|1x3">
 
+        <!-- Mon1: row1=Curr, row2=P2, row3=P4 -->
+        <!-- Mon2: row1=P1,   row2=P3, row3=P5  -->
+        <!-- → cross-monitor row-first: Curr P1 / P2 P3 / P4 P5 -->
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="VISAGE AX MPR" replace="%IMAGESET%=CurrAllSeriesThinnest;%GROUP%=1"/>
-        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P1 VISAGE AX MPR" replace="%IMAGESET%=P1AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P2 VISAGE AX MPR" replace="%IMAGESET%=P2AllSeriesThinnest;%GROUP%=1"/>
-
-        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P3 VISAGE AX MPR" replace="%IMAGESET%=P3AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P4 VISAGE AX MPR" replace="%IMAGESET%=P4AllSeriesThinnest;%GROUP%=1"/>
+
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P1 VISAGE AX MPR" replace="%IMAGESET%=P1AllSeriesThinnest;%GROUP%=1"/>
+        <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P3 VISAGE AX MPR" replace="%IMAGESET%=P3AllSeriesThinnest;%GROUP%=1"/>
         <include href="_include_DisplaySets.xml#_MPR_AX_LINK" DefaultText="P5 VISAGE AX MPR" replace="%IMAGESET%=P5AllSeriesThinnest;%GROUP%=1"/>
 
     </Layout>
