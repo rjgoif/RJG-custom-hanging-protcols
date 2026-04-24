@@ -46,13 +46,19 @@ Panel ordering in these layouts is **row-first across monitors** (1 2 3 4 / 5 6 
 New layout group (LayoutIds 5201, 5210, 5212, 5213, 1–4 monitors) mirroring the existing `Compare Statics/Clips` layouts but with `Zoom="80%"` on all static image panels. Clip panels remain at default zoom. Useful when static frames are large-format and measurements are obscured by image numbers at 100% (THYROIDS!)
 
 **New high-density statics layouts added**
-Four new 2-monitor landscape layouts for viewing large numbers of static frames at once. All are `Active="false"` (manual select only) and use slice-by-slice mousewheel (page mode off).
+Ten 2-monitor landscape layouts for viewing large numbers of static frames at once, ordered descending by panels per screen. All are `Active="false"` (manual select only) and use slice-by-slice mousewheel (page mode off).
 
-| LayoutId | Name | Description | Tile group |
-| -------- | ---- | ----------- | ---------- |
-| `42s` | 50 Statics | Current exam, 25 statics per screen | `21s` (requires server-side tile group definition) |
-| `43s` | 48 Statics | Current exam, 24 statics per screen | `24s` (works now) |
-| `21s` | Compare 25 (Static) | Current (screen 1) vs prior (screen 2), 25 per screen | `21s`/`121s` (requires server-side tile group definition) |
-| `22s` | Compare 24 (Static) | Current (screen 1) vs prior (screen 2), 24 per screen | `24s`/`124s` (works now) |
+| LayoutId | Name | Grid | Per screen | Tile group |
+| -------- | ---- | ---- | ---------- | ---------- |
+| `42s` | 50 Statics | 5×5 | 25 | `21s` * |
+| `21s` | Compare 25 (Static) | 5×5 | 25 | `21s`/`121s` * |
+| `43s` | 48 Statics | 6×4 | 24 | `24s` |
+| `22s` | Compare 24 (Static) | 6×4 | 24 | `24s`/`124s` |
+| `20s` | 40 Statics | 5×4 | 20 | `20s` * |
+| `24s` | Compare 20 (Static) | 5×4 | 20 | `20s`/`120s` * |
+| `15s` | 32 Statics | 4×4 | 16 | `15s` * |
+| `17s` | Compare 16 (Static) | 4×4 | 16 | `15s`/`115s` * |
+| `16s` | 24 Statics | 3×4 | 12 | `12s` |
+| `18s` | Compare 12 (Static) | 3×4 | 12 | `12s`/`112s` |
 
-The `21s` tile group (5×5 grid) is not confirmed to exist in the Visage server config. If `50 Statics` and `Compare 25 (Static)` fail to render, the `48 Statics` and `Compare 24 (Static)` fallbacks use the existing `24s` group and are guaranteed to work.
+\* Tile groups marked with an asterisk require server-side definition and may not render until added to the Visage tile group config. Unmarked tile groups are confirmed working. The `24s`/`12s` layouts serve as fallbacks while the others are validated.
