@@ -16,6 +16,12 @@ Added Compare Statics/Clips (80% statics) layouts (LayoutIds 5201, 5210, 5212, 5
   - Clip panels remain at default 100% zoom
   - Available for 1, 2, 3, and 4 monitor configurations
   - Same conditions and priorities as the regular Compare Statics/Clips layouts
+
+Added high-density statics layouts (2-monitor landscape only, Active=false, manual select):
+  LayoutId 42s  - "50 Statics"           : current exam, 21s tile group x2 monitors (requires 21s server tile group)
+  LayoutId 43s  - "48 Statics"           : current exam, 24s tile group x2 monitors (guaranteed to work)
+  LayoutId 21s  - "Compare 25 (Static)"  : current+prior, 21s tile group (requires 21s and 121s server tile groups)
+  LayoutId 22s  - "Compare 24 (Static)"  : current+prior, 24s tile group (guaranteed to work)
 </ProtocolComment>
 
     <!--***************************************************************************************
@@ -749,6 +755,80 @@ For each monitor configuration - there should be
             Geometry="1x1">
 
         <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS TILED" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=24s;%MINTILES%=24;%MAXTILES%=24"/>
+    </Layout>
+
+    <!-- ============================================================ -->
+    <!-- R_US custom: 42 Statics and 21x2 Statics                    -->
+    <!-- Two variants each: 21s tile group (preferred, may need       -->
+    <!-- server-side tile group definition) and 24s fallback          -->
+    <!-- (guaranteed to work with existing tile groups).              -->
+    <!-- All 2-monitor landscape only. Active=false (manual select).  -->
+    <!-- ============================================================ -->
+
+    <!-- 50 Statics: current exam across both monitors, 25 per screen -->
+    <!-- Uses 21s tile group - requires server-side 21s definition    -->
+    <Layout LayoutId="42s"
+            Name="50 Statics"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (21)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=21s;%MINTILES%=21;%MAXTILES%=21"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (21)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=21s;%MINTILES%=21;%MAXTILES%=21"/>
+    </Layout>
+
+    <!-- 48 Statics (24+24): current exam across both monitors, 24 per screen -->
+    <!-- Uses existing 24s tile group - guaranteed to work            -->
+    <Layout LayoutId="43s"
+            Name="48 Statics"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="EmptyLayout"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (24)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=24s;%MINTILES%=24;%MAXTILES%=24"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (24)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=24s;%MINTILES%=24;%MAXTILES%=24"/>
+    </Layout>
+
+    <!-- Compare 25 (Static): current on screen 1, prior on screen 2, 25 per screen -->
+    <!-- Uses 21s tile group - requires server-side 21s definition    -->
+    <Layout LayoutId="21s"
+            Name="Compare 25 (Static)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (21)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=21s;%MINTILES%=21;%MAXTILES%=21"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS (21)" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=121s;%MINTILES%=21;%MAXTILES%=21"/>
+    </Layout>
+
+    <!-- Compare 24 (Static): current on screen 1, prior on screen 2, 24 per screen -->
+    <!-- Uses existing 24s tile group - guaranteed to work            -->
+    <Layout LayoutId="22s"
+            Name="Compare 24 (Static)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio4"
+            Condition="AllListedMissing"
+            ConditionArgs="P1AllStatics"
+            ConditionAction="Hide"
+            Active="false"
+            Geometry="1x1|1x1">
+
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="STATICS (24)" replace="%IMAGESET%=CurrAllStatics;%TILEGROUP%=24s;%MINTILES%=24;%MAXTILES%=24"/>
+        <include href="_include_DisplaySets.xml#_2D_Tile_Auto2" CineAutoTrigger="false" DefaultText="P1 STATICS (24)" replace="%IMAGESET%=P1AllStatics;%TILEGROUP%=124s;%MINTILES%=24;%MAXTILES%=24"/>
     </Layout>
 
     <!-- 1 Clip -->
