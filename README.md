@@ -45,6 +45,9 @@ Panel ordering in these layouts is **row-first across monitors** (1 2 3 4 / 5 6 
 **New "Compare Statics/Clips (80% statics)" layouts added**
 New layout group (LayoutIds 5201, 5210, 5212, 5213, 1–4 monitors) mirroring the existing `Compare Statics/Clips` layouts but with `Zoom="80%"` on all static image panels. Clip panels remain at default zoom. Useful when static frames are large-format and measurements are obscured by image numbers at 100% (THYROIDS!)
 
+**"Thyroid80%" auto-selecting layout added**
+LayoutIds 5301, 5310, 5312, 5313 (1–4 monitors). Identical to the 80% statics layouts above but conditioned on `CurrThyroidStatics`/`CurrThyroidStatics0` — custom ImageSets that match series with `Dicom.SeriesDescription Op="Equals" "US THYROID GLAND"` against both current study slots. The layout is hidden entirely on non-thyroid exams and auto-selects (`Default="Prio1"`) on thyroid exams.
+
 **New high-density statics layouts added**
 Ten 2-monitor landscape layouts for viewing large numbers of static frames at once, ordered descending by panels per screen. All are `Active="false"` (manual select only) and use slice-by-slice mousewheel (page mode off).
 

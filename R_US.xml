@@ -133,6 +133,39 @@ Date/name/change message
     <!--    <include replace="22121918=16001;%STUDYPREFIX%=ExtraUS" href="_include_ImageSets.xml#ImageSets_US"/> -->
     <include replace="22121918=17001;%STUDYPREFIX%=ExtraXA" href="_include_ImageSets.xml#ImageSets_XA"/>
 
+    <!-- R_US custom: thyroid-specific ImageSet for conditional layout visibility -->
+    <!-- Uses Op="Equals" on the exact DICOM series description "US THYROID GLAND". -->
+    <!-- Two variants covering both current study slots (0 and 1).              -->
+    <ImageSet ImageSetId="CurrThyroidStatics"
+              StudyId="0"
+              Name="%DICOM.Modality% %DICOM.StudyDate% / %DICOM.StudyDescription% (Thyroid Statics)"
+              ThumbnailLabel2="(Thyroid Statics)"
+              ShowThumbnail="false">
+        <Tag Name="Dicom.Modality">US</Tag>
+        <Tag Name="Abstract.Is2DMultiframe">false</Tag>
+        <Tag Name="Condition.Ultrasound_3DVolume">false</Tag>
+        <Tag Name="Condition.VisageKeyView">false</Tag>
+        <Tag Name="Condition.Paperwork">false</Tag>
+        <Tag Name="Dicom.SeriesDescription" Op="Equals">US THYROID GLAND</Tag>
+        <Sort Name="Abstract.SeriesNumber" Order="Ascending" Split="false"/>
+        <Sort Name="DICOM.InstanceNumber" Order="Ascending" Split="false"/>
+    </ImageSet>
+
+    <ImageSet ImageSetId="CurrThyroidStatics0"
+              StudyId="1"
+              Name="%DICOM.Modality% %DICOM.StudyDate% / %DICOM.StudyDescription% (Thyroid Statics)"
+              ThumbnailLabel2="(Thyroid Statics)"
+              ShowThumbnail="false">
+        <Tag Name="Dicom.Modality">US</Tag>
+        <Tag Name="Abstract.Is2DMultiframe">false</Tag>
+        <Tag Name="Condition.Ultrasound_3DVolume">false</Tag>
+        <Tag Name="Condition.VisageKeyView">false</Tag>
+        <Tag Name="Condition.Paperwork">false</Tag>
+        <Tag Name="Dicom.SeriesDescription" Op="Equals">US THYROID GLAND</Tag>
+        <Sort Name="Abstract.SeriesNumber" Order="Ascending" Split="false"/>
+        <Sort Name="DICOM.InstanceNumber" Order="Ascending" Split="false"/>
+    </ImageSet>
+
 
 
 
@@ -1420,6 +1453,86 @@ For each monitor configuration - there should be
             Default="Prio2"
             Condition="AnyListedMissing"
             ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS" replace="%IMAGESET%=P3AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 CLIPS" replace="%IMAGESET%=P3AllClips"/>
+
+    </Layout>
+
+    <!-- Thyroid (80% statics) ============================================== -->
+    <!-- Identical to 5201/5210/5212/5213 but conditioned on CurrThyroidStatics -->
+    <!-- being populated (i.e. a series with "THYROID" in its description).   -->
+    <!-- Default=Prio1 so these auto-select over the generic 80% layouts      -->
+    <!-- when the exam is a thyroid US. Hidden for all other US exams.        -->
+
+    <!-- 1 monitor, portrait -->
+    <Layout LayoutId="5301"
+            Name="Thyroid80%"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+
+    </Layout>
+
+    <!-- 2 monitors, landscape -->
+    <Layout LayoutId="5310"
+            Name="Thyroid80%"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+
+    </Layout>
+
+    <!-- 3 monitors -->
+    <Layout LayoutId="5312"
+            Name="Thyroid80%"
+            Monitors="3"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="80%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+
+    </Layout>
+
+    <!-- 4 monitors -->
+    <Layout LayoutId="5313"
+            Name="Thyroid80%"
+            Monitors="4"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
             ConditionAction="Hide"
             Geometry="1x2|1x2|1x2|1x2">
 
