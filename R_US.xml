@@ -1467,6 +1467,82 @@ For each monitor configuration - there should be
 
     </Layout>
 
+    <!-- Compare Statics/Clips (65% statics zoom) ========================== -->
+
+    <!-- 1 monitor, portrait -->
+    <Layout LayoutId="5401"
+            Name="Compare Statics/Clips (65% statics)"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+
+    </Layout>
+
+    <!-- 2 monitors, landscape -->
+    <Layout LayoutId="5410"
+            Name="Compare Statics/Clips (65% statics)"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+
+    </Layout>
+
+    <!-- 3 monitors -->
+    <Layout LayoutId="5412"
+            Name="Compare Statics/Clips (65% statics)"
+            Monitors="3"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+
+    </Layout>
+
+    <!-- 4 monitors -->
+    <Layout LayoutId="5413"
+            Name="Compare Statics/Clips (65% statics)"
+            Monitors="4"
+            Default="Prio2"
+            Condition="AnyListedMissing"
+            ConditionArgs="CurrAllClips"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS" replace="%IMAGESET%=P3AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 CLIPS" replace="%IMAGESET%=P3AllClips"/>
+
+    </Layout>
+
     <!-- Thyroid (80% statics) ============================================== -->
     <!-- Identical to 5201/5210/5212/5213 but conditioned on CurrThyroidStatics -->
     <!-- being populated (i.e. a series with "THYROID" in its description).   -->
@@ -1547,9 +1623,83 @@ For each monitor configuration - there should be
 
     </Layout>
 
-    
+    <!-- Thyroid65% ========================================================= -->
 
-    <!-- Compare 1 Tile -->
+    <!-- 1 monitor, portrait -->
+    <Layout LayoutId="5501"
+            Name="Thyroid65%"
+            Monitors="1"
+            AspectRatio="portrait"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+
+    </Layout>
+
+    <!-- 2 monitors, landscape -->
+    <Layout LayoutId="5510"
+            Name="Thyroid65%"
+            Monitors="1 2"
+            AspectRatio="landscape"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+
+    </Layout>
+
+    <!-- 3 monitors -->
+    <Layout LayoutId="5512"
+            Name="Thyroid65%"
+            Monitors="3"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+
+    </Layout>
+
+    <!-- 4 monitors -->
+    <Layout LayoutId="5513"
+            Name="Thyroid65%"
+            Monitors="4"
+            Default="Prio1"
+            Condition="AllListedMissing"
+            ConditionArgs="CurrThyroidStatics CurrThyroidStatics0"
+            ConditionAction="Hide"
+            Geometry="1x2|1x2|1x2|1x2">
+
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="STATICS" replace="%IMAGESET%=CurrAllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="CLIPS" replace="%IMAGESET%=CurrAllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 STATICS" replace="%IMAGESET%=P1AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P1 CLIPS" replace="%IMAGESET%=P1AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 STATICS" replace="%IMAGESET%=P2AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P2 CLIPS" replace="%IMAGESET%=P2AllClips"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 STATICS" replace="%IMAGESET%=P3AllStatics" Zoom="65%"/>
+        <include href="_include_DisplaySets.xml#_2D" DefaultText="P3 CLIPS" replace="%IMAGESET%=P3AllClips"/>
+
+    </Layout>
+
+    
     <Layout LayoutId="100"
             Name="Compare 1"
             Monitors="1"
