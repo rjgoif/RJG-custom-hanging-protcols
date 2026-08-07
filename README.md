@@ -42,20 +42,14 @@ Panel ordering in these layouts is **row-first across monitors** (1 2 3 4 / 5 6 
 
 ### Changes
 
-**New "Compare Statics/Clips (80% statics)" layouts added**
-New layout group (LayoutIds 5201, 5210, 5212, 5213, 1–4 monitors) mirroring the existing `Compare Statics/Clips` layouts but with `Zoom="80%"` on all static image panels. Clip panels remain at default zoom. Useful when static frames are large-format and measurements are obscured by image numbers at 100% (THYROIDS!)
+**"Compare Statics/Clips (80% statics)" layouts added**
+LayoutIds 5201, 5210, 5212, 5213 (1–4 monitors). Static panels at `Zoom="80%"`, clips at default.
 
-**"Thyroid80%" auto-selecting layout added**
-LayoutIds 5301, 5310, 5312, 5313 (1–4 monitors). Identical to the 80% statics layouts above but conditioned on `CurrThyroidStatics`/`CurrThyroidStatics0` — custom ImageSets that match series with `Dicom.SeriesDescription Op="Equals" "US THYROID GLAND"` against both current study slots. The layout is hidden entirely on non-thyroid exams and auto-selects (`Default="Prio1"`) on thyroid exams.
+**"Compare Statics/Clips (65% statics)" layouts added**
+LayoutIds 5401, 5410, 5412, 5413 (1–4 monitors). Same as above at `Zoom="65%"`.
 
-**New "Compare Statics/Clips (65% statics)" layouts added**
-LayoutIds 5401, 5410, 5412, 5413 (1–4 monitors). Same as the 80% statics layouts but with `Zoom="65%"`. For workstations where 80% is still too large.
-
-**"Thyroid65%" auto-selecting layout added**
-LayoutIds 5501, 5510, 5512, 5513 (1–4 monitors). Same thyroid condition as Thyroid80% but at 65% zoom. Both Thyroid80% and Thyroid65% appear in the layout picker for thyroid exams so the better zoom level can be selected per workstation.
-
-**New high-density statics layouts added**
-Ten 2-monitor landscape layouts for viewing large numbers of static frames at once, ordered descending by panels per screen. All are `Active="false"` (manual select only) and use slice-by-slice mousewheel (page mode off).
+**High-density statics layouts added**
+Ten 2-monitor landscape layouts, `Active="false"` (manual select), slice-by-slice mousewheel. Ordered descending by panels per screen.
 
 | LayoutId | Name | Grid | Per screen | Tile group |
 | -------- | ---- | ---- | ---------- | ---------- |
@@ -70,4 +64,13 @@ Ten 2-monitor landscape layouts for viewing large numbers of static frames at on
 | `16s` | 24 Statics | 3×4 | 12 | `12s` |
 | `18s` | Compare 12 (Static) | 3×4 | 12 | `12s`/`112s` |
 
-\* Tile groups marked with an asterisk require server-side definition and may not render until added to the Visage tile group config. Unmarked tile groups are confirmed working. The `24s`/`12s` layouts serve as fallbacks while the others are validated.
+\* Requires server-side tile group definition. `24s`/`12s` layouts are confirmed working fallbacks.
+
+---
+
+## R US Thyroid (`R_US_Thyroid.xml`)
+
+**Base:** `R_US.xml`  
+**Priority:** 84 (beats R US at 83)
+
+Restricted to `Dicom.StudyDescription = "US THYROID GLAND"`. All DICOM annotations off (Categories 1–4). Default layout: "Thyroids" (Compare Statics/Clips, fit zoom, `Prio1`). All R US layouts otherwise inherited.
